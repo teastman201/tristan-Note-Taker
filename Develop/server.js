@@ -4,24 +4,17 @@ const fs = require("fs");
 
 const express = require("express");
 const app = express();
-const PORT1 = 3000;
+const PORT1 = 8080;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-function handleRequest(request, response) {
-    response.end("It Works!! Path Hit: " + request.url);
+handleRequest = (req, res) => {
+    res.end("It Works!! Path Hit: " + req.url);
 }
 
-app.get("/notes", function (req, res) {
-    // console.log("testNotes")
-    res.sendFile(path.join(__dirname, "/public/notes.html"));
-});
-
-app.get("*", function (req, res) {
-    // console.log("testIndex")
-    res.sendFile(path.join(__dirname, "/public/index.html"));
-});
+require("./public/assets/js/apiRoutes")(app);
+require("./public/assets/js/htmlRoutes")(app);
 
 app.listen(PORT1, function () {
     console.log("App is listening on PORT: " + PORT1);
