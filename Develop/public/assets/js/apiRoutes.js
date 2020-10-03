@@ -1,12 +1,13 @@
-let noteData = require("../../../db/db.json");
+let notePath = "../../../db/db.json"
+let noteData = require(notePath);
+
 const fs = require("fs");
 const path = require("path");
 
 module.exports = function (app) {
     app.get("/api/notes", function (req, res) {
-
         res.json(noteData);
-        fs.readFileSync(path.join(__dirname, "../../../db/db.json"));
+        fs.readFileSync(path.join(__dirname, notePath));
         console.log("testNotes")
     })
 
@@ -19,7 +20,6 @@ module.exports = function (app) {
         function addIdentifier(noteAdd) {
             noteAdd.id = iterator;
             iterator++;
-            // let deleteId = noteAdd.id;
             console.log(noteAdd);
         }
 
@@ -29,7 +29,6 @@ module.exports = function (app) {
                 var c = noteData[i];
                 if (typeof c === 'object') {
                     if (c.length === undefined) {
-                        //c is not an array
                         addIdentifier(c);
                     }
                     loop(c);
@@ -37,15 +36,33 @@ module.exports = function (app) {
             }
         }
         loop(noteData);
+        fs.writeFile('./db/db.json', JSON.stringify(noteData), function (err) {
+            console.log(err);
+            // console.log(noteData);
+        })
     })
 
     app.delete("/api/notes/:id", function (req, res) {
-        let id = parseInt(req.params.id)
-        delete id;
-        console.log("testDelete");
-        console.log(id);
+        let rawData = fs.readFileSync('./db/db.json');
+        let s = JSON.parse(rawData);
+        id = parseInt(req.params.id)
+        // console.log(id)
+        console.log("testDelete")
 
-        // delete 
+        var index = s.map(x => {
+            // console.log(x.id)
+            return x.id;
+        })
+        // .indexOf(id);
+
+        s.splice(id, 1);
+        // console.log(index);
+        console.log(s);
+
+        fs.writeFile('./db/db.json', JSON.stringify(s), function (err) {
+            console.log(err);
+            // console.log(noteData);
+        })
 
     })
 }
