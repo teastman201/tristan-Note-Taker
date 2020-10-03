@@ -9,6 +9,7 @@ module.exports = function (app) {
         res.json(noteData);
         fs.readFileSync(path.join(__dirname, notePath));
         console.log("testNotes")
+
     })
 
     app.post("/api/notes", function (req, res) {
@@ -57,12 +58,26 @@ module.exports = function (app) {
 
         s.splice(id, 1);
         // console.log(index);
+        console.log("testSplice")
         console.log(s);
 
-        fs.writeFile('./db/db.json', JSON.stringify(s), function (err) {
-            console.log(err);
-            // console.log(noteData);
+        // array methods to 
+
+        fs.writeFile('./db/db.json', JSON.stringify(s), function (res, err) {
+            // console.log(err);
+            console.log("testWrite");
+            console.log(JSON.stringify(s));
+
+            // send new db.json file from .delete
+            if (res.sendFile("./db", "db.json")) {
+                console.log("testSendFile")
+                console.log(err)
+            } else {
+                console.log("testSendFileFalse")
+            }
+            // review front end code
         })
+
 
     })
 }
