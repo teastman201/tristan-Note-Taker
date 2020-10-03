@@ -6,18 +6,21 @@ module.exports = function (app) {
     app.get("/api/notes", function (req, res) {
 
         res.json(noteData);
-
         fs.readFileSync(path.join(__dirname, "../../../db/db.json"));
         console.log("testNotes")
     })
 
     app.post("/api/notes", function (req, res) {
         console.log("testNoteAdd")
+        let iterator = 0;
+        let noteAdd = req.body;
         noteData.push(req.body);
 
-        function addIdentifier(target) {
-            target.id = iterator;
+        function addIdentifier(noteAdd) {
+            noteAdd.id = iterator;
             iterator++;
+            // let deleteId = noteAdd.id;
+            console.log(noteAdd);
         }
 
         function loop(noteData) {
@@ -33,11 +36,14 @@ module.exports = function (app) {
                 }
             }
         }
-        loop(json);
+        loop(noteData);
     })
 
     app.delete("/api/notes/:id", function (req, res) {
         let id = parseInt(req.params.id)
+        delete id;
+        console.log("testDelete");
+        console.log(id);
 
         // delete 
 
