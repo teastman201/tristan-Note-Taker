@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     })
 
-    app.post("/api/notes", function (req, res) {
+    app.post("/api/notes", function (req, res1) {
         console.log("testNoteAdd")
         let iterator = 0;
         let noteAdd = req.body;
@@ -39,45 +39,32 @@ module.exports = function (app) {
         loop(noteData);
         fs.writeFile('./db/db.json', JSON.stringify(noteData), function (err) {
             console.log(err);
+            res1.sendFile(path.join(__dirname, notePath));
             // console.log(noteData);
         })
     })
 
-    app.delete("/api/notes/:id", function (req, res) {
+    app.delete("/api/notes/:id", function (req, response) {
         let rawData = fs.readFileSync('./db/db.json');
         let s = JSON.parse(rawData);
         id = parseInt(req.params.id)
-        // console.log(id)
-        console.log("testDelete")
 
+        console.log("testDelete")
         var index = s.map(x => {
-            // console.log(x.id)
             return x.id;
         })
-        // .indexOf(id);
 
         s.splice(id, 1);
-        // console.log(index);
         console.log("testSplice")
         console.log(s);
 
-        // array methods to 
+        fs.writeFile('./db/db.json', JSON.stringify(s), function (err) {
 
-        fs.writeFile('./db/db.json', JSON.stringify(s), function (res, err) {
-            // console.log(err);
             console.log("testWrite");
             console.log(JSON.stringify(s));
 
-            // send new db.json file from .delete
-            if (res.sendFile("./db", "db.json")) {
-                console.log("testSendFile")
-                console.log(err)
-            } else {
-                console.log("testSendFileFalse")
-            }
-            // review front end code
+            response.sendFile(path.join(__dirname, notePath));
+
         })
-
-
     })
 }
