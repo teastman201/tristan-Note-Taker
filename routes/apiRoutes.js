@@ -48,17 +48,16 @@ module.exports = function (app) {
     app.delete("/api/notes/:id", function (req, response) {
         let rawData = fs.readFileSync(noteFilePath);
         let s = JSON.parse(rawData);
-        id = parseInt(req.params.id)
-
-        console.log("testDelete")
-
+        // console.log(s);
+        console.log("raw data", s)
+        let id = parseInt(req.params.id)
+        // console.log("testDelete")
         s.splice(id, 1);
         // // console.log("testSplice")
         // console.log(s);
+        fs.writeFileSync(noteFilePath, JSON.stringify(s), function (err) {
 
-        fs.writeFile(noteFilePath, JSON.stringify(s), function (err) {
-            //     //     response.sendFile(path.join(__dirname, notePath));
-            // response.send(i)
         })
+        response.json('done');
     })
 }
