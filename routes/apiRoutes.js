@@ -7,9 +7,9 @@ const path = require("path");
 
 module.exports = function (app) {
     app.get("/api/notes", function (req, res) {
-
-        res.json(noteData);
         fs.readFileSync(path.join(__dirname, notePath));
+        res.json(noteData);
+
         console.log("testNotes")
 
     })
@@ -17,7 +17,6 @@ module.exports = function (app) {
     app.post("/api/notes", function (req, res1) {
         console.log("testNoteAdd")
         let iterator = 0;
-        let noteAdd = req.body;
         noteData.push(req.body);
 
         function addIdentifier(noteAdd) {
@@ -52,16 +51,14 @@ module.exports = function (app) {
         id = parseInt(req.params.id)
 
         console.log("testDelete")
-        var index = s.map(x => {
-            return x.id;
-        })
 
         s.splice(id, 1);
-        console.log("testSplice")
-        console.log(s);
+        // // console.log("testSplice")
+        // console.log(s);
 
-        fs.writeFile(notePath, JSON.stringify(s), function (err) {
-            response.sendFile(path.join(__dirname, notePath));
+        fs.writeFile(noteFilePath, JSON.stringify(s), function (err) {
+            //     //     response.sendFile(path.join(__dirname, notePath));
+            // response.send(i)
         })
     })
 }
