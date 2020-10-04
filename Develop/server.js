@@ -5,8 +5,8 @@ const PORT = 8080;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-require("./public/assets/js/apiRoutes")(app);
-require("./public/assets/js/htmlRoutes")(app);
+require("./routes/apiRoutes")(app);
+require("./routes/htmlRoutes")(app);
 
 handleRequest = (req, res) => {
     res.end("It Works!! Path Hit: " + req.url);

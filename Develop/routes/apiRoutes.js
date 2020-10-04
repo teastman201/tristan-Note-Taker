@@ -1,4 +1,5 @@
-let notePath = "../../../db/db.json"
+let notePath = "../db/db.json";
+let noteFilePath = './db/db.json';
 let noteData = require(notePath);
 
 const fs = require("fs");
@@ -6,6 +7,7 @@ const path = require("path");
 
 module.exports = function (app) {
     app.get("/api/notes", function (req, res) {
+
         res.json(noteData);
         fs.readFileSync(path.join(__dirname, notePath));
         console.log("testNotes")
@@ -37,15 +39,15 @@ module.exports = function (app) {
             }
         }
         loop(noteData);
-        fs.writeFile('./db/db.json', JSON.stringify(noteData), function (err) {
-            console.log(err);
+        fs.writeFile(noteFilePath, JSON.stringify(noteData), function (err) {
+            // console.log(err);
             res1.sendFile(path.join(__dirname, notePath));
             // console.log(noteData);
         })
     })
 
     app.delete("/api/notes/:id", function (req, response) {
-        let rawData = fs.readFileSync('./db/db.json');
+        let rawData = fs.readFileSync(noteFilePath);
         let s = JSON.parse(rawData);
         id = parseInt(req.params.id)
 
@@ -58,13 +60,10 @@ module.exports = function (app) {
         console.log("testSplice")
         console.log(s);
 
-        fs.writeFile('./db/db.json', JSON.stringify(s), function (err) {
+        // fs.writeFile("../db/db.json", JSON.stringify(s), function (err) {
+        //     // console.log("testWrite");
+        //     // console.log(JSON.stringify(s));
 
-            console.log("testWrite");
-            console.log(JSON.stringify(s));
-
-            response.sendFile(path.join(__dirname, notePath));
-
-        })
+        // })
     })
 }
