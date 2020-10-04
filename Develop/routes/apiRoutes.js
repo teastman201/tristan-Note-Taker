@@ -60,10 +60,8 @@ module.exports = function (app) {
         console.log("testSplice")
         console.log(s);
 
-        // fs.writeFile("../db/db.json", JSON.stringify(s), function (err) {
-        //     // console.log("testWrite");
-        //     // console.log(JSON.stringify(s));
-
-        // })
+        fs.writeFile(notePath, JSON.stringify(s), function (err) {
+            response.sendFile(path.join(__dirname, notePath));
+        })
     })
 }
